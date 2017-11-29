@@ -1,0 +1,36 @@
+
+apiVersion: {{ version }}
+kind: ReplicationController
+metadata:
+  name: {{ name }}
+  labels:
+    name: {{ name }}
+spec:
+  replicas: {{ replicas }}
+  template:
+    metadata:
+      labels:
+        name: mysql
+    spec:
+      containers:
+      - name: {{ name }}
+        image: mysql
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: super_seckrit_passwurd
+          - name: MYSQL_USER
+            value: acme
+          - name: MYSQL_PASSWORD
+            value: natty_is_gr8
+          - name: MYSQL_DATABASE
+            value: acme
+        ports:
+          - containerPort: {{ outport }}
+            name: {{ name }}
+        volumeMounts:
+          - name: {{ name }}-persistent-storage
+            mountPath: /var/lib/mysql/data
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: claim-mysql

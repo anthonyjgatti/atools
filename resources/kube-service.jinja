@@ -1,0 +1,17 @@
+{% block content -%}
+apiVersion: {{ version }}
+kind: Service
+metadata:
+  labels:
+    name: {{ name }}
+  name: {{ name }}
+spec:
+  ports:
+    - port: {{ port }}
+      targetPort: {{ name }}
+  selector:
+    name: {{ name }}
+  {% if frontend -%}
+  type: LoadBalancer
+  {% endif -%}
+{% endblock content -%}

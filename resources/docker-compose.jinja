@@ -1,0 +1,22 @@
+version: {{ version }}
+
+services:
+{% block content %}
+  {% if 'mysql' in services -%}
+  {{ mysql_servicename }}:
+    image: mysql:{{ mysql_version }}
+    volumes:
+      - {{ mysql_volume }}:/var/lib/mysql
+      {% if mysql_schemaload -%}
+      - {{ mysql_schemaload }}:/docker-entrypoint-initdb.d/:ro
+      {% endif -%}
+    ports:
+      - {{ mysql_outport }}:3306
+    stdin_open: true
+    tty: true
+    container_name: {{ mysql_containername }}
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: {{ mysql_rootpassword }}
+  {% endif -%}
+{% endblock content %}

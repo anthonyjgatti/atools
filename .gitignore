@@ -1,0 +1,23 @@
+# Virtual env stuff.
+bin/
+include/
+lib/
+lib64
+share/
+*.egg-info/
+pip-selfcheck.json
+# pyvenv.cfg ???
+
+# Python caching.
+__pycache__/
+*.py[cod]
+*.class
+
+# vim
+*.swp
+
+# OSX
+.DS_Store
+
+# Custom
+__status__
