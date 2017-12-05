@@ -7,34 +7,21 @@ class Definition(ContainerBase, Generative):
     """
     Define the contents of a Dockerfile. Build them up through successive calls
     of ``commandbuilder`` which is decorated by _generative, indicating that
-    successive calls of this method return new instances of ``Definition``.
+    successive calls of this method return updated instances of ``Definition``.
     """
 
+    full_application_path, container_engine, container_orchestrator = None, None, None
     _valid_commands = {'base','run', 'entrypoint', 'cmd', 'env', 'user', 'workdir'}
     _templateVars = []
 
     def __init__(self, app_path, engine = 'docker', orchestrator = 'kubernetes'):
-        self.app_path = app_path
-        self._container_engine = engine
-        self._container_orchestrator = orchestrator
 
-    @property
-    def full_application_path(self):
-        """Instantiate application path as abtract property."""
+        # Set initial variables.
+        self.full_application_path = app_path
+        self.container_engine = engine
+        self.container_orchestrator = orchestrator
 
-        return self.app_path
-
-    @property
-    def container_engine(self):
-        """Instantiate container engine as abstract property."""
-
-        return self._container_engine
-
-    @property
-    def container_orchestrator(self):
-        """Instantiate container orchestrator as abstract property."""
-
-        return self._container_orchestrator
+        # Validate input path and set up environment.
 
     @property
     def render(self):
@@ -49,10 +36,17 @@ class Definition(ContainerBase, Generative):
         self._templateVars.append(value)
 
     @_generative
+    def base(self, command):
+        """For base calls, reset the _templateVars list."""
+
+        self._templateVars = []
+        self.render = ('FROM', command)
+
+    @_generative
     def _commandbuilder(self, method, command):
         """Build the sequence of commands in the Docker file."""
 
-        self.render = (method.upper() if method != 'base' else 'FROM', command)
+        self.render = (method.upper(), command)
 
     @_generative
     def env(self, variable, value):

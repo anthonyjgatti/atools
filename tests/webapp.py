@@ -11,3 +11,5 @@ vue = df.base('node:slim') \
 
 mysql = df.base('mysql:latest')
 
+print(vue)
+
