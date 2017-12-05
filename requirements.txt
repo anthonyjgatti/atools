@@ -1,3 +1,2 @@
 ## !! Could not determine repository location
 atools==0.1
-pkg-resources>=0.0.0
