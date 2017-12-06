@@ -1,1 +1,10 @@
--e git+https://github.com/anthonyjgatti/atools.git@89a30a39bd52a51de02fe5cee254deac93556167#egg=atools
+-e git+https://github.com/anthonyjgatti/atools.git@2fe3e45d75c5ae5c0c34d49442fea0aa59844be6#egg=atools
+certifi==2017.11.5
+chardet==3.0.4
+docker==2.6.1
+docker-pycreds==0.2.1
+idna==2.6
+requests==2.18.4
+six==1.11.0
+urllib3==1.22
+websocket-client==0.44.0
