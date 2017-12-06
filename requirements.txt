@@ -1,4 +1,4 @@
--e git+https://github.com/anthonyjgatti/atools.git@2fe3e45d75c5ae5c0c34d49442fea0aa59844be6#egg=atools
+-e git+https://github.com/anthonyjgatti/atools.git@57308817447be8ec85e2f17ba7498d327eb547f8#egg=atools
 certifi==2017.11.5
 chardet==3.0.4
 docker==2.6.1

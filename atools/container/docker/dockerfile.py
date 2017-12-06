@@ -2,7 +2,6 @@
 # TODO: Add logging.
 
 # Load base modules.
-import collections
 import functools
 import os
 
@@ -33,16 +32,18 @@ class Definition(ContainerBase, Generative):
         self.container_orchestrator = orchestrator
 
     @_generative
-    def _commandbuilder(self, method, command):
+    def _commandbuilder(self, method, *command):
         '''Build the sequence of commands in the Docker file.
         For ``base`` calls, reset the base _templateVars object.'''
 
         if method == 'base':
-            self._templateVars = [('FROM', command)]
+            self._templateVars = [('FROM', command[0])]
         elif method in ['entrypoint','cmd']:
-            self._templateVars.append((method.upper(), '["' + command + '"]'))
+            self._templateVars.append(
+                (method.upper(), '["' + '", "'.join(c for c in command) + '"]')
+            )
         else:
-            self._templateVars.append((method.upper(), command))
+            self._templateVars.append((method.upper(), command[0]))
 
     @_generative
     def env(self, variable, value):
@@ -55,9 +56,8 @@ class Definition(ContainerBase, Generative):
         '''Takes a Python iterable and puts each of its contents one single 
         RUN command in the output Dockerfile, using && and \.'''
 
-        # ADD SOME VALIDATION AROUND ITERATION ABILITY.
         if isinstance(iterable, list):
-            command = ' && \\\n'.join(iterable)
+            command = ' && \\\n  '.join(iterable)
             self._templateVars.append(('RUN', command))
         else:
             raise TypeError('runlist must be called with list object.')
